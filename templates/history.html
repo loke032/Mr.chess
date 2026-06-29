@@ -1,0 +1,191 @@
+<head>
+    <link rel="icon" href="{{ url_for('static', filename='images/icons8-chess-16.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+    
+</head>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+<body>
+    <div class="top-bar">
+
+    <a href="/">
+        <button class="back-button">Back to Game</button>
+    </a>
+    <h1>Game History</h1>
+    <a href="/puzzles">
+        <button class="puzzles-button">Go to Puzzles</button>
+    </a>
+    </div>
+    <div id="board" width="500px"></div>
+    <div class="move-buttons">
+        <button  onclick="prevMove()">←</button>
+        <button  onclick="nextMove()">→</button>
+    
+    </div>
+    
+    
+    <div class="analysis-info">
+        <div id="classification"></div>
+        <div id="move"></div>
+        <div id="best_move"></div>
+    </div>
+    
+    <div class="customization">
+    <button id="delete-button" onclick="deleteGame()" style="display:none;">Delete</button>
+    <button id="rename-button" onclick="renameGame()" style="display:none;">Rename</button>
+    <button id="favorit-button" onclick="favoritGame()" style="display:none;">Favorite</button>
+    </div>
+    
+    <h2>Games</h2>
+    <div class="games-container">
+    
+        {% for game_name, game_data in games.items() %}
+            
+                <button class="game-btn"  onclick="showMoves('{{ game_name }}', this)">
+                    {% if game_data.get("favorite") %}
+                        👑
+                    {% endif %}
+                    
+                    {{ game_data.get("custom_name", game_data['result']) }}
+                </button>
+                
+                
+            
+        {% endfor %}
+    
+    </div>
+    
+    <script>
+    let currentGameName = null;
+
+        var config = {
+        draggable: false,
+        dropOFFBoard: 'snapback',
+        orientation: 'white',
+        position: 'start',
+        pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png'
+    };
+    const games = JSON.parse('{{ games | tojson | safe }}');
+    var currentFens = [];
+    var currentMove = 1;
+    var analysis = [];
+    var board = Chessboard('board', config);
+    function showMoves(gameName, button) {
+
+        document.querySelectorAll(".game-btn").forEach(btn => {
+            btn.classList.remove("selected");
+        });
+
+        button.classList.add("selected");
+
+        currentGameName = gameName;
+        
+        document.getElementById("delete-button").style.display = "block";
+        document.getElementById("rename-button").style.display = "block";
+        document.getElementById("favorit-button").style.display = "block";
+
+        if (games[gameName]["local_play"]) {
+            board.orientation('white');
+        } else {
+            board.orientation(games[gameName]["orientation"] || 'white')
+        }
+
+        currentFens = games[gameName]["fens"];
+
+        currentMove = 1;
+
+        analysis = games[gameName]["analysis"] || [];
+        console.log(analysis);
+        
+        updateAnalysis();
+
+        board.position(currentFens[currentMove]);
+        
+
+
+        }
+    function nextMove() {
+        if (currentMove < currentFens.length - 1) {
+            currentMove++;
+            board.position(currentFens[currentMove]);
+                
+            }
+        updateAnalysis();
+        }
+    function prevMove() {
+        if (currentMove > 0) {
+             currentMove--;
+             board.position(currentFens[currentMove]);
+            }
+
+        updateAnalysis();
+        }
+    
+    function updateAnalysis() {
+        const colors = {
+            "Best": "#81B64C",
+            "Great": "#5DADE2",
+            "Excellent": "#95C93D",
+            "Good": "#A5D6A7",
+            "Inaccuracy": "#F4D03F",
+            "Mistake": "#E67E22",
+            "Blunder": "#E74C3C"
+        };
+
+        const cls = analysis[currentMove - 1]["classification"] || "N/A"
+
+        document.getElementById("classification").innerText = cls;
+        document.getElementById("classification").style.color = colors[cls] || "white";
+        document.getElementById("move").innerText = `Move: ${analysis[currentMove - 1]["move"] || "N/A"}`;
+        document.getElementById("best_move").innerText = `Best: ${analysis[currentMove - 1]["best_move"] || "N/A"}`;
+    }
+
+
+    function deleteGame() {
+        if (!currentGameName) return;
+
+        if (!confirm("Delete this game?")) return;
+
+        fetch(`/delete_game/${currentGameName}`, {
+            method: "POST"
+        })
+        .then(() => {
+            location.reload();
+        });
+    }
+    
+    function renameGame() {
+        if (!currentGameName) return;
+
+        const newName = prompt("Enter a new name for the game:")
+
+        if (!newName) return;
+
+        fetch("/rename_game", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                game_name: currentGameName,
+                new_name: newName
+            })
+        })
+        .then(() => location.reload());
+    }
+
+    function favoritGame() {
+        if (!currentGameName) return;
+
+        fetch(`/favorit_game/${currentGameName}`, {
+            method: "POST"
+        })
+        .then(() => {
+            location.reload();
+        });
+    }
+
+
+    </script>   
+</body>

@@ -1,0 +1,153 @@
+<head>
+    <link rel="icon" href="{{ url_for('static', filename='images/icons8-chess-16.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+</head>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+
+
+
+<body>
+    <div class="header">
+    <div class="user-text"><img src="{{ url_for('static', filename='images/icons8-chess-94.png') }}" alt="Logo" class="logo">Mr.Chess</div>
+
+    
+
+
+    <form action="/logout">
+    <button class="logout-button">
+        Logout
+    </button>
+    </form>
+    </div>
+
+    <div class="top-bar">
+
+    <a href="/history">
+        <button class="back-button">View History</button>
+    </a>
+    <h1>{{ username }}</h1>
+    <a href="/puzzles">
+        <button class="puzzles-button">Go to Puzzles</button>
+    </a>
+    </div>
+
+
+    
+    <div class="board-container">
+    <div id="board" style="width: 500px"></div>
+    <div class="message" id="message" >{{ message }}</div>
+    <div class = 'checkmate-message' id="checkmate-message">{{ message }}</div>
+    </div>
+    
+    <div class="bottom-bar">
+    <div id="black-clock">{{ clean_black_time }}</div>
+    <div id="white-clock">{{ clean_white_time }}</div>
+    </div>
+
+    <div class="elo" id="elo">Elo: {{ elo }}</div>
+
+    <div class ="bottom-bar">
+    <form method="POST">
+        <button type="submit" class="new-game-button">New Game</button>
+    </form>
+
+    <form method="POST" action = "/resign">
+        <button type="submit" class="resign-button">Resign</button>
+    </form>
+    <div class="material" id="material">Material: 0</div>
+    </div>
+
+
+    <h2>Difficulty</h2>
+    <form method="POST" action="/set_difficulty">
+        <div class="difficulty-buttons">
+    <button name="difficulty" value="beginner" class="{% if difficulty == 'beginner' %}selected{% endif %}">
+        Beginner
+        <br>
+        (800)
+    </button>
+    <button name="difficulty" value="novice" class="{% if difficulty == 'novice' %}selected{% endif %}">
+        Novice
+        <br>
+        (1100)
+    </button>
+    <button name="difficulty" value="intermediate" class="{% if difficulty == 'intermediate' %}selected{% endif %}">
+        Intermediate
+        <br>
+        (1300)
+    </button>
+    <button name="difficulty" value="advanced" class="{% if difficulty == 'advanced' %}selected{% endif %}">
+        Advanced
+        <br>
+        (1800)
+    </button>
+    <button name="difficulty" value="master" class="{% if difficulty == 'master' %}selected{% endif %}">
+        Master
+        <br>
+        (2300)
+    </button>
+    <button name="difficulty" value="stockfish" class="{% if difficulty == 'stockfish' %}selected{% endif %}">
+        Stockfish 💀
+    </button>
+        </div>
+    </form>
+
+    <form method="POST" action="/set_color">
+        <div class="color_title">Choose Your Color</div>
+        <div class="color-buttons">
+            <button name="color" value="white" class="{% if color_setting == 'white' %}selected{% endif %}">White</button>
+            <button name="color" value="random" class="{% if color_setting == 'random' %}selected{% endif %}">Random</button>
+            <button name="color" value="black" class="{% if color_setting == 'black' %}selected{% endif %}">Black</button>
+        </div>
+    </form>
+
+    <form method="POST" action="/toggle_time">
+        <div class="time-title">Time</div>
+        <div class="time-buttons">
+            <button name="time" value="60" class="{% if white_time == 60 %}selected{% endif %}">1 min</button>
+            <button name="time" value="300" class="{% if white_time == 300 %}selected{% endif %}">5 min</button>
+            <button name="time" value="600" class="{% if white_time == 600 %}selected{% endif %}">10 min</button>
+            <button name="time" value="1800" class="{% if white_time == 1800 %}selected{% endif %}">30 min</button>
+            <button name="time" value="3600" class="{% if white_time == 3600 %}selected{% endif %}">60 min</button>
+            <button name="time" value="59940" class="{% if white_time > 20000 %}selected{% endif %}">Infinite</button>
+        </div>
+            
+    </form>
+    
+
+    <form method="POST" action="/toggle_local_play">
+        <div class="local-play-button">
+        <button type="submit" id="local-play-button" class="{% if local_play == True %}selected{% endif %}">
+            {% if local_play %}
+                Local Play: On
+            {% else %}
+                Local Play: Off
+            {% endif %}
+        </button>
+        </div>
+    </form>
+
+    <div class="creator">Mr.Chess • Created by Loke Biteus</div>
+    
+
+    <script>
+        let currentFen = "{{ fen }}"
+        let whiteTurn = JSON.parse('{{ white_turn | tojson | safe }}');
+        const localPlay = "{{ local_play }}";
+        const material = "{{ material }}";
+        let whiteTime = JSON.parse('{{ white_time | tojson }}');
+        let blackTime = JSON.parse('{{ black_time | tojson }}');
+        let resigned = JSON.parse('{{ resigned | tojson }}');
+        let clockStarted = JSON.parse('{{ clock_started | tojson }}');
+        let elo = JSON.parse('{{ elo | tojson }}')
+        let game_ended = JSON.parse('{{ game_ended | tojson | safe }}');
+        
+    </script>
+    <script src="{{ url_for('static', filename='js/home.js') }}"></script>
+    
+    
+</body>
+

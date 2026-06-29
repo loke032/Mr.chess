@@ -1,0 +1,28 @@
+<head>
+    <link rel="icon" href="{{ url_for('static', filename='images/icons8-chess-16.png') }}">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<h1>Create Account</h1>
+
+<form method="POST">
+    <p>Username</p>
+    <input name="username">
+
+    <p>Password</p>
+    <input name="password">
+
+    <br><br>
+
+    <button type="submit" class="login-button">
+        Create Account
+    </button>
+</form>
+
+<a href="/login">
+    Already have an account? Login
+</a>
+
+</body>
