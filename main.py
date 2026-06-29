@@ -25,6 +25,8 @@ BASE_DIR2 = os.path.dirname(os.path.abspath(__file__))
 FILE_PATH2 = os.path.join(BASE_DIR2, "stockfish/stockfish")
 
 stockfish_path = "/usr/games/stockfish"
+if not os.path.exists(stockfish_path):
+    stockfish_path = shutil.which("stockfish")
 print("STOCKFISH PATH:", stockfish_path)
 
 def get_board():
