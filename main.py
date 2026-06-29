@@ -7,6 +7,7 @@ import random
 from threading import Lock
 from flask import session
 import stat
+import shutil
 
 file_lock = Lock()
 
@@ -21,10 +22,10 @@ BASE_DIR1 = os.path.dirname(os.path.abspath(__file__))
 FILE_PATH1 = os.path.join(BASE_DIR, "data/puzzles.json")
 
 BASE_DIR2 = os.path.dirname(os.path.abspath(__file__))
-FILE_PATH2 = os.path.join(BASE_DIR2, "stockfish/stockfish-ubuntu-x86-64-avx2")
+FILE_PATH2 = os.path.join(BASE_DIR2, "stockfish/stockfish")
 
-stockfish_path = FILE_PATH2
-os.chmod(stockfish_path, stat.S_IRWXU)
+stockfish_path = "/usr/games/stockfish"
+print("STOCKFISH PATH:", stockfish_path)
 
 def get_board():
     with open(FILE_PATH, "r") as f:
