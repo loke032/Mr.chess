@@ -6,6 +6,7 @@ from flask import json
 import random
 from threading import Lock
 from flask import session
+import stat
 
 file_lock = Lock()
 
@@ -19,7 +20,11 @@ FILE_PATH = os.path.join(BASE_DIR, "data/games.json")
 BASE_DIR1 = os.path.dirname(os.path.abspath(__file__))
 FILE_PATH1 = os.path.join(BASE_DIR, "data/puzzles.json")
 
+BASE_DIR2 = os.path.dirname(os.path.abspath(__file__))
+FILE_PATH2 = os.path.join(BASE_DIR2, "stockfish/stockfish-ubuntu-x86-64-avx2")
 
+stockfish_path = FILE_PATH2
+os.chmod(stockfish_path, stat.S_IRWXU)
 
 def get_board():
     with open(FILE_PATH, "r") as f:
@@ -128,7 +133,7 @@ def format_time(time_seconds):
     return f"{minutes:02}:{seconds:02}"
 
 
-engine = chess.engine.SimpleEngine.popen_uci("stockfish")
+engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
 
 
 
