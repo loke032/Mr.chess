@@ -6,6 +6,11 @@ from flask import json
 import random
 from threading import Lock
 from flask import session
+import shutil
+import requests
+import tarfile
+
+
 
 
 file_lock = Lock()
@@ -20,10 +25,8 @@ FILE_PATH = os.path.join(BASE_DIR, "data/games.json")
 BASE_DIR1 = os.path.dirname(os.path.abspath(__file__))
 FILE_PATH1 = os.path.join(BASE_DIR, "data/puzzles.json")
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-stockfish_path = os.path.join(BASE_DIR, "stockfish/stockfish")
 
-engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+engine = None
 
 
 
