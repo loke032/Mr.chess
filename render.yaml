@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: mr-chess
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn main:app

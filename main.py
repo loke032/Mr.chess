@@ -6,8 +6,7 @@ from flask import json
 import random
 from threading import Lock
 from flask import session
-import stat
-import shutil
+
 
 file_lock = Lock()
 
@@ -21,13 +20,13 @@ FILE_PATH = os.path.join(BASE_DIR, "data/games.json")
 BASE_DIR1 = os.path.dirname(os.path.abspath(__file__))
 FILE_PATH1 = os.path.join(BASE_DIR, "data/puzzles.json")
 
-BASE_DIR2 = os.path.dirname(os.path.abspath(__file__))
-FILE_PATH2 = os.path.join(BASE_DIR2, "stockfish/stockfish")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+stockfish_path = os.path.join(BASE_DIR, "stockfish/stockfish")
 
-stockfish_path = "/usr/games/stockfish"
-if not os.path.exists(stockfish_path):
-    stockfish_path = shutil.which("stockfish")
-print("STOCKFISH PATH:", stockfish_path)
+engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+
+
+
 
 def get_board():
     with open(FILE_PATH, "r") as f:
@@ -136,7 +135,6 @@ def format_time(time_seconds):
     return f"{minutes:02}:{seconds:02}"
 
 
-engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
 
 
 
