@@ -27,10 +27,16 @@ FILE_PATH1 = os.path.join(BASE_DIR, "data/puzzles.json")
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+STOCKFISH_PATH = os.path.join(BASE_DIR, "stockfish")
 
-stockfish_path = os.path.join(BASE_DIR, "stockfish", "stockfish")
+if not os.path.exists(STOCKFISH_PATH):
+    url = "https://github.com/official-stockfish/Stockfish/releases/latest/download/stockfish-ubuntu-x86-64-avx2"
+    r = requests.get(url)
+    with open(STOCKFISH_PATH, "wb") as f:
+        f.write(r.content)
 
-engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+os.chmod(STOCKFISH_PATH, 0o755)
+engine = chess.engine.SimpleEngine.popen_uci(STOCKFISH_PATH)
 
 
 
