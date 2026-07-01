@@ -27,15 +27,7 @@ FILE_PATH1 = os.path.join(BASE_DIR, "data/puzzles.json")
 
 
 
-STOCKFISH_PATH = os.path.join(BASE_DIR, "bin/stockfish")
-
-if not os.path.exists(STOCKFISH_PATH):
-    raise Exception("Stockfish not found")
-
-if not os.access(STOCKFISH_PATH, os.X_OK):
-    raise Exception("Stockfish is not executable")
-
-engine = chess.engine.SimpleEngine.popen_uci(STOCKFISH_PATH)
+engine = chess.engine.SimpleEngine.popen_uci("stockfish")
 
 
 
