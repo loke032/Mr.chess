@@ -27,19 +27,16 @@ FILE_PATH1 = os.path.join(BASE_DIR, "data/puzzles.json")
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-STOCKFISH_PATH = os.path.join(BASE_DIR, "stockfish")
+
+STOCKFISH_PATH = os.path.join(BASE_DIR, "stockfish", "stockfish")
 
 engine = None
 
 if os.path.exists(STOCKFISH_PATH):
-    try:
-        engine = chess.engine.SimpleEngine.popen_uci(STOCKFISH_PATH)
-        print("Stockfish loaded")
-    except Exception as e:
-        print("Stockfish failed:", e)
-        engine = None
+    engine = chess.engine.SimpleEngine.popen_uci(STOCKFISH_PATH)
+    print("Stockfish loaded")
 else:
-    print("Stockfish not found, running without engine")
+    print("Stockfish NOT found — running without engine")
 
 
 
