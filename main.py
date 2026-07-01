@@ -1325,7 +1325,8 @@ def toggle_auto_skip():
                 json.dump(data, f, indent=4)
     return redirect('/puzzles')
 
-app.run(debug=True, use_reloader=False)
+if __name__ == "__main__":
+    app.run(debug=True)
 
 "Bugs: "
 
