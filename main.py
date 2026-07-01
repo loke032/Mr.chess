@@ -32,11 +32,11 @@ STOCKFISH_PATH = os.path.join(BASE_DIR, "stockfish", "stockfish")
 
 engine = None
 
-if os.path.exists(STOCKFISH_PATH):
-    engine = chess.engine.SimpleEngine.popen_uci(STOCKFISH_PATH)
-    print("Stockfish loaded")
-else:
-    print("Stockfish NOT found — running without engine")
+def get_engine():
+    global engine
+    if engine is None:
+        engine = chess.engine.SimpleEngine.popen_uci(STOCKFISH_PATH)
+    return engine
 
 
 
@@ -224,6 +224,7 @@ def logout():
 
 @app.route("/", methods=["GET", "POST"])
 def home():
+     engine = get_engine()
     if "username" not in session:
         return redirect("/login")
 
