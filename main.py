@@ -26,7 +26,11 @@ BASE_DIR1 = os.path.dirname(os.path.abspath(__file__))
 FILE_PATH1 = os.path.join(BASE_DIR, "data/puzzles.json")
 
 
-engine = None
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+stockfish_path = os.path.join(BASE_DIR, "stockfish", "stockfish")
+
+engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
 
 
 
