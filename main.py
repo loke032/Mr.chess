@@ -224,7 +224,7 @@ def logout():
 
 @app.route("/", methods=["GET", "POST"])
 def home():
-     engine = get_engine()
+    engine = get_engine()
     if "username" not in session:
         return redirect("/login")
 
