@@ -26,17 +26,16 @@ BASE_DIR1 = os.path.dirname(os.path.abspath(__file__))
 FILE_PATH1 = os.path.join(BASE_DIR, "data/puzzles.json")
 
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-STOCKFISH_PATH = os.path.join(BASE_DIR, "stockfish", "stockfish")
+STOCKFISH_PATH = os.path.join(BASE_DIR, "bin/stockfish")
 
-engine = None
+if not os.path.exists(STOCKFISH_PATH):
+    raise Exception("Stockfish not found")
 
-def get_engine():
-    global engine
-    if engine is None:
-        engine = chess.engine.SimpleEngine.popen_uci(STOCKFISH_PATH)
-    return engine
+if not os.access(STOCKFISH_PATH, os.X_OK):
+    raise Exception("Stockfish is not executable")
+
+engine = chess.engine.SimpleEngine.popen_uci(STOCKFISH_PATH)
 
 
 
@@ -224,7 +223,6 @@ def logout():
 
 @app.route("/", methods=["GET", "POST"])
 def home():
-    engine = get_engine()
     if "username" not in session:
         return redirect("/login")
 
