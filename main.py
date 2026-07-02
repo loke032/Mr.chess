@@ -309,15 +309,15 @@ def home():
             print("player_color =", player_color)
             bot_move = get_bot_move(board)
 
-            info_before = engine.analyse(board, chess.engine.Limit(time=0.1))
+            info_before = engine.analyse(board, chess.engine.Limit(time=0.02))
             best_move = info_before["pv"][0] if "pv" in info_before else None
             best_board = board.copy()
             best_board.push(best_move)
-            best_info = engine.analyse(best_board, chess.engine.Limit(time=0.1))
+            best_info = engine.analyse(best_board, chess.engine.Limit(time=0.02))
             best_score = best_info["score"].white().score(mate_score=10000)
             board.push(bot_move)
 
-            info_after = engine.analyse(board, chess.engine.Limit(time=0.1))
+            info_after = engine.analyse(board, chess.engine.Limit(time=0.02))
             after_score = (
                 info_after["score"].white().score(mate_score=10000)
                 if "score" in info_after
@@ -478,15 +478,15 @@ def set_color():
         if player_color == "black":
             bot_move = get_bot_move(board)
 
-            info_before = engine.analyse(board, chess.engine.Limit(time=0.1))
+            info_before = engine.analyse(board, chess.engine.Limit(time=0.02))
             best_move = info_before["pv"][0] if "pv" in info_before else None
             best_board = board.copy()
             best_board.push(best_move)
-            best_info = engine.analyse(best_board, chess.engine.Limit(time=0.1))
+            best_info = engine.analyse(best_board, chess.engine.Limit(time=0.02))
             best_score = best_info["score"].white().score(mate_score=10000)
             board.push(bot_move)
 
-            info_after = engine.analyse(board, chess.engine.Limit(time=0.1))
+            info_after = engine.analyse(board, chess.engine.Limit(time=0.02))
             after_score = (
                 info_after["score"].white().score(mate_score=10000)
                 if "score" in info_after
@@ -783,14 +783,14 @@ def move():
         games = saved_data["games"]
         game_name = list(games.keys())[-1]
 
-    info_before = engine.analyse(board, chess.engine.Limit(time=0.1))
+    info_before = engine.analyse(board, chess.engine.Limit(time=0.02))
     if board.is_game_over():
         best_score = after_score
     else:
         best_move = info_before["pv"][0] if "pv" in info_before else None
         best_board = board.copy()
         best_board.push(best_move)
-        best_info = engine.analyse(best_board, chess.engine.Limit(time=0.1))
+        best_info = engine.analyse(best_board, chess.engine.Limit(time=0.02))
         best_score = best_info["score"].white().score(mate_score=10000)
 
     if move in board.legal_moves:
@@ -804,7 +804,7 @@ def move():
 
         saved_data["games"][game_name]["fens"].append(board.fen())
 
-        info_after = engine.analyse(board, chess.engine.Limit(time=0.1))
+        info_after = engine.analyse(board, chess.engine.Limit(time=0.02))
         after_score = (
             info_after["score"].white().score(mate_score=10000)
             if "score" in info_after
@@ -839,14 +839,14 @@ def move():
                 "classification": classification,
             }
         )
-        info_before = engine.analyse(board, chess.engine.Limit(time=0.1))
+        info_before = engine.analyse(board, chess.engine.Limit(time=0.02))
         if board.is_game_over():
             best_score = after_score
         else:
             best_move = info_before["pv"][0] if "pv" in info_before else None
             best_board = board.copy()
             best_board.push(best_move)
-            best_info = engine.analyse(best_board, chess.engine.Limit(time=0.1))
+            best_info = engine.analyse(best_board, chess.engine.Limit(time=0.02))
             best_score = best_info["score"].white().score(mate_score=10000)
 
         if not board.is_game_over() and not local_play:
@@ -857,7 +857,7 @@ def move():
             print(difficulty)
             saved_data["games"][game_name]["fens"].append(board.fen())
 
-            info_after = engine.analyse(board, chess.engine.Limit(time=0.1))
+            info_after = engine.analyse(board, chess.engine.Limit(time=0.02))
             after_score = (
                 info_after["score"].white().score(mate_score=10000)
                 if "score" in info_after
