@@ -784,6 +784,7 @@ def move():
         game_name = list(games.keys())[-1]
 
     info_before = engine.analyse(board, chess.engine.Limit(time=0.02))
+    print("info_before:", info_before)
     if board.is_game_over():
         best_score = after_score
     else:
