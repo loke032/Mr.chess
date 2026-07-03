@@ -790,9 +790,22 @@ def move():
         games = saved_data["games"]
         game_name = list(games.keys())[-1]
 
-    print("Before first analyse")
-    info_before = engine.analyse(board, chess.engine.Limit(time=0.02))
-    print("After first analyse")
+    print("Testing engine...")
+
+    result = engine.play(board, chess.engine.Limit(time=0.02))
+
+    print("Engine returned:", result.move)
+
+    return {
+        "legal": True,
+        "fen": board.fen(),
+        "message": "test",
+        "local_play": False,
+        "material": get_material(board),
+        "white_turn": board.turn,
+        "elo": 0,
+        "game_ended": False,
+    }
     if board.is_game_over():
         best_score = after_score
     else:
