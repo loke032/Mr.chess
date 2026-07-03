@@ -94,6 +94,7 @@ def get_material(board):
 
 
 def get_bot_move(board):
+    engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
     with open(FILE_PATH, "r") as f:
             data = json.load(f)
             saved_data = data["users"][session["username"]]
@@ -143,6 +144,7 @@ def get_bot_move(board):
             result = engine.play(board, chess.engine.Limit(time=bot_time))
             bot_move = result.move
 
+    engine.quit()
     return bot_move
 
 
@@ -790,11 +792,7 @@ def move():
         games = saved_data["games"]
         game_name = list(games.keys())[-1]
 
-    print("Testing engine...")
-
-    result = engine.play(board, chess.engine.Limit(time=0.02))
-
-    print("Engine returned:", result.move)
+    info_before = engine.analyse(board, chess.engine.Limit(time=0.02))
 
     return {
         "legal": True,
