@@ -38,7 +38,10 @@ stockfish_path = os.path.join(
 
 engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
 
+print("Engine started")
 
+result = engine.play(chess.Board(), chess.engine.Limit(time=0.01))
+print("Engine test move:", result.move)
 
 def get_board():
     with open(FILE_PATH, "r") as f:
