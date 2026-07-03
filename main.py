@@ -725,6 +725,7 @@ def legal_moves():
 
 @app.route("/move", methods=["POST"])
 def move():
+    print("MOVE ROUTE STARTED")
     with open(FILE_PATH, "r") as f:
             data = json.load(f)
             saved_data = data["users"][session["username"]]
@@ -749,6 +750,7 @@ def move():
     print("current game in move:", current_game)
     data_move = request.json
     board = current_game if current_game else get_board()
+    print("Board created")
 
 
     try:
@@ -785,8 +787,9 @@ def move():
         games = saved_data["games"]
         game_name = list(games.keys())[-1]
 
+    print("Before first analyse")
     info_before = engine.analyse(board, chess.engine.Limit(time=0.02))
-    print("info_before:", info_before)
+    print("After first analyse")
     if board.is_game_over():
         best_score = after_score
     else:
@@ -1336,6 +1339,12 @@ def toggle_auto_skip():
             with open(FILE_PATH, "w") as f:
                 json.dump(data, f, indent=4)
     return redirect('/puzzles')
+
+@app.errorhandler(Exception)
+def handle_error(e):
+    import traceback
+    traceback.print_exc()
+    return str(e), 500
 
 if __name__ == "__main__":
     app.run(debug=True)
