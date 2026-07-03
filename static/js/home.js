@@ -10,6 +10,7 @@ var config = {
         pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png',
 
         onDrop: function(source, target, piece) {
+            console.log("onDrop called");
             document.querySelectorAll(".move-dot").forEach(dot => dot.remove());
             if (gameOver || resigned) return 'snapback';
             var move = source + target;
@@ -21,6 +22,7 @@ var config = {
             }
             let fadeTimeout;
             console.log(board.fen());
+            console.log("sending move:", move);
             fetch('/move', {
                 method: 'POST',
                 headers: {
