@@ -730,6 +730,7 @@ def legal_moves():
 
 @app.route("/move", methods=["POST"])
 def move():
+    engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
     print("MOVE ROUTE STARTED")
     with open(FILE_PATH, "r") as f:
             data = json.load(f)
@@ -996,7 +997,7 @@ def move():
             json.dump(data, f, indent=4)
 
     material = get_material(board)
-
+    engine.quit()
     print("befor return in move:", board.fen())
     return {
         "legal": legal,
