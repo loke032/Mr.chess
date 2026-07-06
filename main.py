@@ -36,10 +36,14 @@ stockfish_path = os.path.join(
     "stockfish"
 )
 
-engine = None
+engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
 
 print("Engine started")
 
+board = chess.Board()
+board.push_san("e4")
+
+print(engine.analyse(board, chess.engine.Limit(time=0.02)))
 
 
 def get_board():
@@ -796,9 +800,9 @@ def move():
         game_name = list(games.keys())[-1]
 
     print("Trying to use engine in move route")
-    engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+    
     info_before = engine.analyse(board, chess.engine.Limit(time=0.02))
-    engine.quit()
+    
     print("Engine analysis finished in move route")
 
     
