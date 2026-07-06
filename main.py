@@ -800,6 +800,10 @@ def move():
         game_name = list(games.keys())[-1]
 
     print("Trying to use engine in move route")
+    print(type(board))
+    print(board.fen())
+    print(board.is_valid())
+    print(board)
     
     info_before = engine.analyse(board, chess.engine.Limit(time=0.02))
     
