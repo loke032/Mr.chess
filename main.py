@@ -36,7 +36,7 @@ stockfish_path = os.path.join(
     "stockfish"
 )
 
-engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+engine = None
 
 print("Engine started")
 
@@ -730,7 +730,7 @@ def legal_moves():
 
 @app.route("/move", methods=["POST"])
 def move():
-    engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+    
     print("MOVE ROUTE STARTED")
     with open(FILE_PATH, "r") as f:
             data = json.load(f)
@@ -793,7 +793,11 @@ def move():
         games = saved_data["games"]
         game_name = list(games.keys())[-1]
 
+    print("Trying to use engine in move route")
+    engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
     info_before = engine.analyse(board, chess.engine.Limit(time=0.02))
+    engine.quit()
+    print("Engine analysis finished in move route")
 
     
     if board.is_game_over():
@@ -997,7 +1001,7 @@ def move():
             json.dump(data, f, indent=4)
 
     material = get_material(board)
-    engine.quit()
+   
     print("befor return in move:", board.fen())
     return {
         "legal": legal,
