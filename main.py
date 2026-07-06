@@ -264,9 +264,12 @@ def home():
                 json.dump(data, f, indent=4)
 
     username = session["username"]
-
-    white_time = int(time)
-    black_time = int(time)
+    try:
+        white_time = int(time)
+        black_time = int(time)
+    except Exception:
+        white_time = 300
+        black_time = 300
     try:
         games = saved_data["games"]
     except Exception:
