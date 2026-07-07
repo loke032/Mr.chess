@@ -36,19 +36,12 @@ stockfish_path = os.path.join(
     "stockfish"
 )
 
-import subprocess
-
-engine = chess.engine.SimpleEngine.popen_uci(
-    subprocess.Popen(
-        [stockfish_path],
-        stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True,
-    )
-)
+engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
 
 print("Engine started")
+import sys
+
+print(sys.version)
 
 board = chess.Board()
 board.push_san("e4")
