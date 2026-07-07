@@ -742,15 +742,32 @@ def legal_moves():
 
 @app.route("/move", methods=["POST"])
 def move():
-    print("MOVE ROUTE ENTERED")
+    print("1")
+
+    with open(FILE_PATH, "r") as f:
+        data = json.load(f)
+
+    print("2")
+
+    saved_data = data["users"][session["username"]]
+
+    print("3")
+
+    current_game = chess.Board(saved_data["current_game"]) if saved_data["current_game"] else None
+
+    print("4")
+
+    board = current_game if current_game else get_board()
+
+    print("5")
 
     return {
         "legal": True,
-        "fen": chess.STARTING_FEN,
+        "fen": board.fen(),
         "message": None,
         "local_play": False,
         "material": 0,
-        "white_turn": True,
+        "white_turn": board.turn,
         "elo": 1200,
         "game_ended": False,
     }
