@@ -160,7 +160,10 @@ def format_time(time_seconds):
     return f"{minutes:02}:{seconds:02}"
 
 
-
+@app.route("/ping")
+def ping():
+    print("PING")
+    return {"ok": True}
 
 
 @app.route("/signup", methods=["GET", "POST"])
