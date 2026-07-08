@@ -664,6 +664,10 @@ def save_clock():
     data = request.json
 
     games = saved_data["games"]
+    if not games:
+        return "", 204
+
+    
     latest_game = list(games.keys())[-1]
     games[latest_game]["white_time"] = data["white_time"]
     games[latest_game]["black_time"] = data["black_time"]
@@ -751,6 +755,7 @@ def move():
     print("7")
 
     info = test_engine.analyse(board, chess.engine.Limit(time=0.02))
+    print("Info:", info)
 
     print("8")
 
