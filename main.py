@@ -100,7 +100,7 @@ def get_material(board):
 
 
 def get_bot_move(board):
-    engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+    test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
     with open(FILE_PATH, "r") as f:
             data = json.load(f)
             saved_data = data["users"][session["username"]]
@@ -108,11 +108,7 @@ def get_bot_move(board):
             bot_time = saved_data["bot_time"]
             print("Bot time:", bot_time)
     print("starting analysis")
-    test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
-
-    info = test_engine.analyse(board, chess.engine.Limit(time=0.02))
-
-    test_engine.quit()
+    info = test_engine.analyse(board, chess.engine.Limit(time=bot_time), multipv=5)
     print("Finished analysis")
 
     candidates = []
@@ -125,7 +121,7 @@ def get_bot_move(board):
             candidates.append((move, score))
 
     if not candidates:
-        result = engine.play(board, chess.engine.Limit(time=bot_time))
+        result = test_engine.play(board, chess.engine.Limit(time=bot_time))
         bot_move = result.move
     else:
         if difficulty == "beginner":
@@ -151,10 +147,10 @@ def get_bot_move(board):
         elif difficulty == "master":
             bot_move = candidates[0][0]
         else:
-            result = engine.play(board, chess.engine.Limit(time=bot_time))
+            result = test_engine.play(board, chess.engine.Limit(time=bot_time))
             bot_move = result.move
 
-    engine.quit()
+    test_engine.quit()
     return bot_move
 
 
@@ -245,7 +241,7 @@ def logout():
 def home():
     if "username" not in session:
         return redirect("/login")
-
+    test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
 
     try:
         with open(FILE_PATH, "r") as f:
@@ -332,28 +328,15 @@ def home():
             print("player_color =", player_color)
             bot_move = get_bot_move(board)
 
-            test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
-
             info_before = test_engine.analyse(board, chess.engine.Limit(time=0.02))
-
-            test_engine.quit()
-
             best_move = info_before["pv"][0] if "pv" in info_before else None
             best_board = board.copy()
             best_board.push(best_move)
-
-            test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
             best_info = test_engine.analyse(best_board, chess.engine.Limit(time=0.02))
             best_score = best_info["score"].white().score(mate_score=10000)
-            test_engine.quit()
-
             board.push(bot_move)
 
-            test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
-
             info_after = test_engine.analyse(board, chess.engine.Limit(time=0.02))
-
-            test_engine.quit()
             after_score = (
                 info_after["score"].white().score(mate_score=10000)
                 if "score" in info_after
@@ -424,7 +407,7 @@ def home():
     saved_data["new_game"] = new_game
     saved_data["current_game"] = current_game.fen() if current_game else None
 
-   
+    test_engine.quit()
     with file_lock:
         with open(FILE_PATH, 'w') as f:
             json.dump(data, f, indent=4)
@@ -490,6 +473,7 @@ def set_difficulty():
 
 @app.route("/set_color", methods=["POST"])
 def set_color():
+    test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
     
     with open(FILE_PATH, "r") as f:
             data = json.load(f)
@@ -514,25 +498,15 @@ def set_color():
         if player_color == "black":
             bot_move = get_bot_move(board)
 
-            test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
-
             info_before = test_engine.analyse(board, chess.engine.Limit(time=0.02))
-
-            test_engine.quit()
             best_move = info_before["pv"][0] if "pv" in info_before else None
             best_board = board.copy()
             best_board.push(best_move)
-
-            test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
             best_info = test_engine.analyse(best_board, chess.engine.Limit(time=0.02))
-            test_engine.quit()
-
             best_score = best_info["score"].white().score(mate_score=10000)
             board.push(bot_move)
 
-            test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
             info_after = test_engine.analyse(board, chess.engine.Limit(time=0.02))
-            test_engine.quit()
             after_score = (
                 info_after["score"].white().score(mate_score=10000)
                 if "score" in info_after
@@ -581,6 +555,7 @@ def set_color():
         with open(FILE_PATH, 'w') as f:
             json.dump(data, f, indent=4)
 
+    test_engine.quit()
     return redirect("/")
 
 
@@ -773,7 +748,7 @@ def legal_moves():
 
 @app.route("/move", methods=["POST"])
 def move():
-    
+    test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
     print("MOVE ROUTE STARTED")
     with open(FILE_PATH, "r") as f:
             data = json.load(f)
@@ -842,11 +817,7 @@ def move():
     print(board.is_valid())
     print(board)
     
-    test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
-
     info_before = test_engine.analyse(board, chess.engine.Limit(time=0.02))
-
-    test_engine.quit()
     
     print("Engine analysis finished in move route")
 
@@ -857,11 +828,7 @@ def move():
         best_move = info_before["pv"][0] if "pv" in info_before else None
         best_board = board.copy()
         best_board.push(best_move)
-
-        test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
         best_info = test_engine.analyse(best_board, chess.engine.Limit(time=0.02))
-        test_engine.quit()
-
         best_score = best_info["score"].white().score(mate_score=10000)
 
     if move in board.legal_moves:
@@ -875,10 +842,7 @@ def move():
 
         saved_data["games"][game_name]["fens"].append(board.fen())
 
-        test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
         info_after = test_engine.analyse(board, chess.engine.Limit(time=0.02))
-        test_engine.quit()
-
         after_score = (
             info_after["score"].white().score(mate_score=10000)
             if "score" in info_after
@@ -913,22 +877,14 @@ def move():
                 "classification": classification,
             }
         )
-
-        test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
         info_before = test_engine.analyse(board, chess.engine.Limit(time=0.02))
-        test_engine.quit()
-
         if board.is_game_over():
             best_score = after_score
         else:
             best_move = info_before["pv"][0] if "pv" in info_before else None
             best_board = board.copy()
             best_board.push(best_move)
-
-            test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
             best_info = test_engine.analyse(best_board, chess.engine.Limit(time=0.02))
-            test_engine.quit()
-
             best_score = best_info["score"].white().score(mate_score=10000)
 
         if not board.is_game_over() and not local_play:
@@ -939,10 +895,7 @@ def move():
             print(difficulty)
             saved_data["games"][game_name]["fens"].append(board.fen())
 
-            test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
             info_after = test_engine.analyse(board, chess.engine.Limit(time=0.02))
-            test_engine.quit()
-            
             after_score = (
                 info_after["score"].white().score(mate_score=10000)
                 if "score" in info_after
@@ -1072,6 +1025,7 @@ def move():
     material = get_material(board)
    
     print("befor return in move:", board.fen())
+    test_engine.quit()
     return {
         "legal": legal,
         "fen": board.fen(),
@@ -1082,6 +1036,7 @@ def move():
         "elo": elo,
         "game_ended": game_ended,
     }
+
 
 
 @app.route("/puzzle_move", methods=["POST"])
