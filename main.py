@@ -36,17 +36,7 @@ stockfish_path = os.path.join(
     "stockfish"
 )
 
-engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
 
-print("Engine started")
-import sys
-
-print(sys.version)
-
-board = chess.Board()
-board.push_san("e4")
-
-print(engine.analyse(board, chess.engine.Limit(time=0.02)))
 
 
 def get_board():
