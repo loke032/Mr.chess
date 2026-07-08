@@ -108,7 +108,11 @@ def get_bot_move(board):
             bot_time = saved_data["bot_time"]
             print("Bot time:", bot_time)
     print("starting analysis")
-    info = engine.analyse(board, chess.engine.Limit(time=bot_time), multipv=5)
+    test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+
+    info = test_engine.analyse(board, chess.engine.Limit(time=0.02))
+
+    test_engine.quit()
     print("Finished analysis")
 
     candidates = []
@@ -328,15 +332,28 @@ def home():
             print("player_color =", player_color)
             bot_move = get_bot_move(board)
 
-            info_before = engine.analyse(board, chess.engine.Limit(time=0.02))
+            test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+
+            info_before = test_engine.analyse(board, chess.engine.Limit(time=0.02))
+
+            test_engine.quit()
+
             best_move = info_before["pv"][0] if "pv" in info_before else None
             best_board = board.copy()
             best_board.push(best_move)
-            best_info = engine.analyse(best_board, chess.engine.Limit(time=0.02))
+
+            test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+            best_info = test_engine.analyse(best_board, chess.engine.Limit(time=0.02))
             best_score = best_info["score"].white().score(mate_score=10000)
+            test_engine.quit()
+
             board.push(bot_move)
 
-            info_after = engine.analyse(board, chess.engine.Limit(time=0.02))
+            test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+
+            info_after = test_engine.analyse(board, chess.engine.Limit(time=0.02))
+
+            test_engine.quit()
             after_score = (
                 info_after["score"].white().score(mate_score=10000)
                 if "score" in info_after
@@ -497,15 +514,25 @@ def set_color():
         if player_color == "black":
             bot_move = get_bot_move(board)
 
-            info_before = engine.analyse(board, chess.engine.Limit(time=0.02))
+            test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+
+            info_before = test_engine.analyse(board, chess.engine.Limit(time=0.02))
+
+            test_engine.quit()
             best_move = info_before["pv"][0] if "pv" in info_before else None
             best_board = board.copy()
             best_board.push(best_move)
-            best_info = engine.analyse(best_board, chess.engine.Limit(time=0.02))
+
+            test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+            best_info = test_engine.analyse(best_board, chess.engine.Limit(time=0.02))
+            test_engine.quit()
+
             best_score = best_info["score"].white().score(mate_score=10000)
             board.push(bot_move)
 
-            info_after = engine.analyse(board, chess.engine.Limit(time=0.02))
+            test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+            info_after = test_engine.analyse(board, chess.engine.Limit(time=0.02))
+            test_engine.quit()
             after_score = (
                 info_after["score"].white().score(mate_score=10000)
                 if "score" in info_after
@@ -746,32 +773,314 @@ def legal_moves():
 
 @app.route("/move", methods=["POST"])
 def move():
+    
+    print("MOVE ROUTE STARTED")
+    with open(FILE_PATH, "r") as f:
+            data = json.load(f)
+            saved_data = data["users"][session["username"]]
+            current_puzzle = saved_data["current_puzzle"]
+            puzzle_index = saved_data["puzzle_index"]
+            difficulty = saved_data["difficulty"]
+            bot_time = saved_data["bot_time"]
+            player_color = saved_data["player_color"]
+            local_play = saved_data["local_play"]
+            resigned = saved_data["resigned"]
+            time = saved_data["time"]
+            local_play_button_pressed = saved_data["local_play_button_pressed"]
+            bot_analysis = saved_data["bot_analysis"]
+            new_game = saved_data["new_game"]
+            color_setting = saved_data["color_setting"]
+            auto_skip = saved_data["auto_skip"]
+            auto_skip_pressed = saved_data["auto_skip_pressed"]
+            puzzle_completed = saved_data["puzzle_completed"]
+            current_game = chess.Board(saved_data["current_game"]) if saved_data["current_game"] else None
+            puzzle_board = chess.Board(saved_data["puzzle_board"]) if saved_data["puzzle_board"] else None
+
+    print("current game in move:", current_game)
+    data_move = request.json
+    board = current_game if current_game else get_board()
+    print("Board created")
 
 
-    print("6")
+    try:
+        move = chess.Move.from_uci(data_move["move"])
+        print(move)
+    except Exception:
+        print("Invalid Move")
+        move = None
+    message = ""
 
+    if is_new_game(board):
+        games = saved_data["games"]
+        if games:
+            last_number = max(int(name.split("_")[1]) for name in games.keys())
+        else:
+            last_number = 0
+        game_name = f"game_{last_number + 1:03d}"
+        saved_data["games"][game_name] = {
+            "fens": [chess.STARTING_FEN],
+            "orientation": player_color,
+            "white_time": 300,
+            "black_time": 300,
+            "player_color": player_color,
+            "local_play": local_play,
+            "difficulty": difficulty,
+        }
+        saved_data["games"][game_name]["analysis"] = (
+            [bot_analysis] if bot_analysis else []
+        )
+        current_game = None
+        if board.fen() != chess.STARTING_FEN and not local_play:
+            saved_data["games"][game_name]["fens"].append(board.fen())
+    else:
+        games = saved_data["games"]
+        game_name = list(games.keys())[-1]
+
+    print("Trying to use engine in move route")
+    print(type(board))
+    print(board.fen())
+    print(board.is_valid())
+    print(board)
+    
     test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
 
-    print("7")
-
-    info = test_engine.analyse(board, chess.engine.Limit(time=0.02))
-    print("Info:", info)
-
-    print("8")
+    info_before = test_engine.analyse(board, chess.engine.Limit(time=0.02))
 
     test_engine.quit()
+    
+    print("Engine analysis finished in move route")
 
-    print("9")
+    
+    if board.is_game_over():
+        best_score = after_score
+    else:
+        best_move = info_before["pv"][0] if "pv" in info_before else None
+        best_board = board.copy()
+        best_board.push(best_move)
 
+        test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+        best_info = test_engine.analyse(best_board, chess.engine.Limit(time=0.02))
+        test_engine.quit()
+
+        best_score = best_info["score"].white().score(mate_score=10000)
+
+    if move in board.legal_moves:
+        legal = True
+        new_game = False
+        board.push(move)
+        print(board.fen())
+        if board.is_check():
+            message = "Check!"
+            print("check")
+
+        saved_data["games"][game_name]["fens"].append(board.fen())
+
+        test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+        info_after = test_engine.analyse(board, chess.engine.Limit(time=0.02))
+        test_engine.quit()
+
+        after_score = (
+            info_after["score"].white().score(mate_score=10000)
+            if "score" in info_after
+            else None
+        )
+        loss = abs(best_score - after_score)
+        if move == best_move:
+            classification = "Best"
+
+        elif loss <= 20:
+            classification = "Excellent"
+
+        elif loss <= 50:
+            classification = "Good"
+
+        elif loss <= 100:
+            classification = "Inaccuracy"
+
+        elif loss <= 300:
+            classification = "Mistake"
+
+        else:
+            classification = "Blunder"
+        if move == best_move and len(info_before["pv"]) == 1:
+            classification = "Great"
+
+        print(move)
+        saved_data["games"][game_name]["analysis"].append(
+            {
+                "move": move.uci(),
+                "best_move": best_move.uci(),
+                "classification": classification,
+            }
+        )
+
+        test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+        info_before = test_engine.analyse(board, chess.engine.Limit(time=0.02))
+        test_engine.quit()
+
+        if board.is_game_over():
+            best_score = after_score
+        else:
+            best_move = info_before["pv"][0] if "pv" in info_before else None
+            best_board = board.copy()
+            best_board.push(best_move)
+
+            test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+            best_info = test_engine.analyse(best_board, chess.engine.Limit(time=0.02))
+            test_engine.quit()
+
+            best_score = best_info["score"].white().score(mate_score=10000)
+
+        if not board.is_game_over() and not local_play:
+            bot_move = get_bot_move(board)
+
+            board.push(bot_move)
+            print(board.fen())
+            print(difficulty)
+            saved_data["games"][game_name]["fens"].append(board.fen())
+
+            test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+            info_after = test_engine.analyse(board, chess.engine.Limit(time=0.02))
+            test_engine.quit()
+            
+            after_score = (
+                info_after["score"].white().score(mate_score=10000)
+                if "score" in info_after
+                else None
+            )
+            loss = abs(best_score - after_score)
+            if bot_move == best_move:
+                classification = "Best"
+
+            elif loss <= 20:
+                classification = "Excellent"
+
+            elif loss <= 50:
+                classification = "Good"
+
+            elif loss <= 100:
+                classification = "Inaccuracy"
+
+            elif loss <= 300:
+                classification = "Mistake"
+
+            else:
+                classification = "Blunder"
+            if bot_move == best_move and len(info_before["pv"]) == 1:
+                classification = "Great"
+
+            saved_data["games"][game_name]["analysis"].append(
+                {
+                    "move": bot_move.uci(),
+                    "best_move": best_move.uci(),
+                    "classification": classification,
+                }
+            )
+
+    else:
+        legal = False
+
+    if board.is_check():
+        message = "Check!"
+        print("check")
+    if board.is_game_over():
+        if board.is_checkmate():
+            print("checkmate")
+            if board.turn == chess.BLACK:
+                message = "Checkmate!\nWhite wins!"
+                print(message)
+            else:
+                message = "Checkmate!\nBlack wins!"
+        else:
+            message = "Draw!"
+    if message == "":
+        message = None
+
+    bot_elo = 0
+    if difficulty == "beginner":
+        bot_elo = 800
+    elif difficulty == "novice":
+        bot_elo = 1100
+    elif difficulty == "intermediate":
+        bot_elo = 1300
+    elif difficulty == "advanced":
+        bot_elo = 1800
+    elif difficulty == "master":
+        bot_elo = 2300
+    elif difficulty == "stockfish":
+        bot_elo = 3000
+    player_elo = saved_data["elo"]
+    elo_dif_plus = bot_elo - player_elo if bot_elo >= player_elo else 0
+    elo_add = min(round(elo_dif_plus / 5), 100)
+    elo_dif_minus = player_elo - bot_elo if player_elo >= bot_elo else 0
+    elo_subtract = min(round(elo_dif_minus / 5), 100)
+
+    game_ended = False
+
+    if board.is_game_over():
+        game_ended = True
+        if board.is_checkmate():
+            if local_play:
+                if board.turn == chess.BLACK:
+                    data_name = "White wins"
+                else:
+                    data_name = "Black wins"
+            else:
+                if (
+                    player_color == "white"
+                    and board.turn == chess.BLACK
+                    or player_color == "black"
+                    and board.turn == chess.WHITE
+                ):
+                    data_name = f"Win vs {difficulty.capitalize()}"
+                    saved_data["elo"] += elo_add
+                elif (
+                    player_color == "white"
+                    and board.turn == chess.WHITE
+                    or player_color == "black"
+                    and board.turn == chess.BLACK
+                ):
+                    data_name = f"Loss vs {difficulty.capitalize()}"
+                    saved_data["elo"] -= elo_subtract
+        else:
+            print("Draw!")
+            if local_play:
+                data_name = "Draw"
+            else:
+                data_name = f"Draw vs {difficulty.capitalize()}"
+            if bot_elo > player_elo:
+                saved_data["elo"] += round(elo_add / 2)
+            elif player_elo > bot_elo:
+                saved_data["elo"] -= round(elo_subtract / 2)
+
+    else:
+        data_name = "In Progress"
+
+    saved_data["games"][game_name]["result"] = data_name
+    elo = saved_data["elo"]
+
+
+
+
+    saved_data["current_game"] = current_game.fen() if current_game else None
+    saved_data["new_game"] = new_game
+
+    with file_lock:
+        with open(FILE_PATH, "w") as f:
+            json.dump(data, f, indent=4)
+
+    material = get_material(board)
+   
+    print("befor return in move:", board.fen())
     return {
-        "legal": True,
+        "legal": legal,
         "fen": board.fen(),
-        "message": None,
-        "local_play": False,
-        "material": 0,
+        "message": message,
+        "local_play": local_play,
+        "material": material,
         "white_turn": board.turn,
-        "elo": 1200,
-        "game_ended": False,
+        "elo": elo,
+        "game_ended": game_ended,
     }
 
 
