@@ -90,58 +90,61 @@ def get_material(board):
 
 
 def get_bot_move(board):
+    print("BOT MOVE FUNCTION STARTED")
     test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
-    with open(FILE_PATH, "r") as f:
-            data = json.load(f)
-            saved_data = data["users"][session["username"]]
-            difficulty = saved_data["difficulty"]
-            bot_time = saved_data["bot_time"]
-            print("Bot time:", bot_time)
-    print("starting analysis")
-    info = test_engine.analyse(board, chess.engine.Limit(time=bot_time), multipv=5)
-    print("Finished analysis")
+    try:
+        with open(FILE_PATH, "r") as f:
+                data = json.load(f)
+                saved_data = data["users"][session["username"]]
+                difficulty = saved_data["difficulty"]
+                bot_time = saved_data["bot_time"]
+                print("Bot time:", bot_time)
+        print("starting analysis")
+        info = test_engine.analyse(board, chess.engine.Limit(time=bot_time), multipv=5)
+        print("Finished analysis")
 
-    candidates = []
+        candidates = []
 
-    for line in info:
-        if "pv" in line and "score" in line:
-            move = line["pv"][0]
-            score = line["score"].relative.score(mate_score=10000)
+        for line in info:
+            if "pv" in line and "score" in line:
+                move = line["pv"][0]
+                score = line["score"].relative.score(mate_score=10000)
 
-            candidates.append((move, score))
+                candidates.append((move, score))
 
-    if not candidates:
-        result = test_engine.play(board, chess.engine.Limit(time=bot_time))
-        bot_move = result.move
-    else:
-        if difficulty == "beginner":
-            bot_move = random.choice(candidates)[0]
-        elif difficulty == "novice":
-            top_moves = candidates[:4]
-            weights = [4, 3, 2, 1][: len(top_moves)]
-            bot_move = random.choices([m for m, s in top_moves], weights=weights, k=1)[
-                0
-            ]
-        elif difficulty == "intermediate":
-            top_moves = candidates[:3]
-            weights = [6, 3, 1][: len(top_moves)]
-            bot_move = random.choices([m for m, s in top_moves], weights=weights, k=1)[
-                0
-            ]
-        elif difficulty == "advanced":
-            top_moves = candidates[:2]
-            weights = [9, 1][: len(top_moves)]
-            bot_move = random.choices([m for m, s in top_moves], weights=weights, k=1)[
-                0
-            ]
-        elif difficulty == "master":
-            bot_move = candidates[0][0]
-        else:
+        if not candidates:
             result = test_engine.play(board, chess.engine.Limit(time=bot_time))
             bot_move = result.move
-
-    test_engine.quit()
-    return bot_move
+        else:
+            if difficulty == "beginner":
+                bot_move = random.choice(candidates)[0]
+            elif difficulty == "novice":
+                top_moves = candidates[:4]
+                weights = [4, 3, 2, 1][: len(top_moves)]
+                bot_move = random.choices([m for m, s in top_moves], weights=weights, k=1)[
+                    0
+                ]
+            elif difficulty == "intermediate":
+                top_moves = candidates[:3]
+                weights = [6, 3, 1][: len(top_moves)]
+                bot_move = random.choices([m for m, s in top_moves], weights=weights, k=1)[
+                    0
+                ]
+            elif difficulty == "advanced":
+                top_moves = candidates[:2]
+                weights = [9, 1][: len(top_moves)]
+                bot_move = random.choices([m for m, s in top_moves], weights=weights, k=1)[
+                    0
+                ]
+            elif difficulty == "master":
+                bot_move = candidates[0][0]
+            else:
+                result = test_engine.play(board, chess.engine.Limit(time=bot_time))
+                bot_move = result.move
+        return bot_move
+    finally:
+        test_engine.quit()
+    
 
 
 def format_time(time_seconds):
