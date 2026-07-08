@@ -761,7 +761,7 @@ def move():
 
     print("5")
 
-    info_before = engine.analyse(board, chess.engine.Limit(time=0.02))
+    
 
     print("6")
 
