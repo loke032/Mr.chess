@@ -769,9 +769,14 @@ def move():
     board = current_game if current_game else get_board()
 
     test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+
+    test_engine.configure({
+        "Hash": 16,
+        "Threads": 1,
+    })
+
     try:
         info_before = test_engine.analyse(board, chess.engine.Limit(time=1.0))
-        print("Info before:", info_before)
     finally:
         test_engine.quit()
     return {
