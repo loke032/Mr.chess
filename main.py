@@ -741,8 +741,35 @@ def legal_moves():
 
 @app.route("/move", methods=["POST"])
 def move():
+    
+    try:
+        print("MOVE ROUTE STARTED")
+        with open(FILE_PATH, "r") as f:
+                data = json.load(f)
+                saved_data = data["users"][session["username"]]
+                current_puzzle = saved_data["current_puzzle"]
+                puzzle_index = saved_data["puzzle_index"]
+                difficulty = saved_data["difficulty"]
+                bot_time = saved_data["bot_time"]
+                player_color = saved_data["player_color"]
+                local_play = saved_data["local_play"]
+                resigned = saved_data["resigned"]
+                time = saved_data["time"]
+                local_play_button_pressed = saved_data["local_play_button_pressed"]
+                bot_analysis = saved_data["bot_analysis"]
+                new_game = saved_data["new_game"]
+                color_setting = saved_data["color_setting"]
+                auto_skip = saved_data["auto_skip"]
+                auto_skip_pressed = saved_data["auto_skip_pressed"]
+                puzzle_completed = saved_data["puzzle_completed"]
+                current_game = chess.Board(saved_data["current_game"]) if saved_data["current_game"] else None
+                puzzle_board = chess.Board(saved_data["puzzle_board"]) if saved_data["puzzle_board"] else None
+    except Exception:
+        print("hello")
+    board = current_game if current_game else get_board()
+
     test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
-    info_before = test_engine.analyse(...)
+    info_before = test_engine.analyse(board, chess.engine.Limit(time=1.0))
     print("Info before:", info_before)
     return {
         "legal": True,
