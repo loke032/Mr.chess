@@ -9,7 +9,7 @@ from flask import session
 import shutil
 import requests
 import tarfile
-
+import resource
 
 
 
@@ -768,15 +768,22 @@ def move():
         print("hello")
     board = current_game if current_game else get_board()
 
+    print("Before engine:", resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
+
     test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+
+    print("After popen:", resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
 
     test_engine.configure({
         "Hash": 16,
         "Threads": 1,
     })
+    try :
+        print("After configure:", resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
 
-    try:
         info_before = test_engine.analyse(board, chess.engine.Limit(time=1.0))
+
+        print("After analyse:", resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
     finally:
         test_engine.quit()
     return {
