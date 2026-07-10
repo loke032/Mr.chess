@@ -37,7 +37,7 @@ stockfish_path = os.path.join(
 )
 
 
-
+print("PID:", os.getpid())
 
 def get_board():
     with open(FILE_PATH, "r") as f:
@@ -741,7 +741,9 @@ def legal_moves():
 
 @app.route("/move", methods=["POST"])
 def move():
-    
+    import os
+
+    print("MOVE PID:", os.getpid())
     try:
         print("MOVE ROUTE STARTED")
         with open(FILE_PATH, "r") as f:
