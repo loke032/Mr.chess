@@ -575,8 +575,8 @@ html {
     .customization,
     .games-container,
     .difficulty-buttons {
-        width: 95vw;
-        max-width: 500px;
+        width: 100vw;
+        max-width: 550px;
     }
 
     #board {
@@ -656,5 +656,29 @@ html {
     .logo {
         width: 55px;
         height: 55px;
+    }
+}
+
+
+@media (max-width: 768px) {
+
+    form {
+        width: 95vw;
+        max-width: 450px;
+    }
+
+    input {
+        width: 100%;
+        font-size: 20px;
+        padding: 14px;
+        box-sizing: border-box;
+    }
+
+    button {
+        font-size: 20px;
+    }
+
+    h1 {
+        font-size: 38px;
     }
 }
