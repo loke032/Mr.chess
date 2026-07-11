@@ -1,6 +1,6 @@
 body {
     animation:fadeIn .5s;
-    background-color: red !important;
+    background-color: black;
     color: white;
     display: flex;
     flex-direction: column;
@@ -714,6 +714,68 @@ html {
     .creator{
         font-size:20px;
         margin-top:35px;
+    }
+
+}
+
+/* MOBILE FINAL FIX */
+
+@media (max-width: 768px) {
+
+    body {
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+
+    .login-container,
+    .signup-container {
+        width: 85vw;
+        max-width: 380px;
+        margin-top: 80px;
+        text-align: center;
+    }
+
+
+    .login-container h1,
+    .signup-container h1 {
+        font-size: 38px;
+    }
+
+
+    .login-container input,
+    .signup-container input {
+        width: 80%;
+        height: 45px;
+        font-size: 20px;
+    }
+
+
+    .login-container button,
+    .signup-container button {
+        width: 80%;
+        font-size: 20px;
+        padding: 12px;
+    }
+
+
+    .board-container {
+        width: 96vw;
+    }
+
+
+    #board {
+        width: 96vw !important;
+    }
+
+
+    .header {
+        width: 95vw;
+    }
+
+
+    .difficulty-buttons {
+        width: 95vw;
     }
 
 }
