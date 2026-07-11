@@ -559,179 +559,128 @@ html {
 
 
 
-/* ================= MOBILE ================= */
+/* ================= MOBILE FIX ================= */
 
-@media (max-width:768px){
-
-    body{
-        padding:12px;
-    }
-
-    /* ---------- Login / Signup ---------- */
-
-    .login-container,
-    .signup-container{
-        width:95%;
-        max-width:500px;
-        margin:40px auto;
-        text-align:center;
-    }
-
-    .login-container h1,
-    .signup-container h1{
-        font-size:48px;
-        margin-bottom:30px;
-    }
-
-    .login-container p,
-    .signup-container p{
-        font-size:22px;
-        margin:18px 0 8px;
-        text-align:left;
-    }
-
-    .login-container input,
-    .signup-container input{
-        width:100%;
-        box-sizing:border-box;
-        padding:16px;
-        font-size:22px;
-        border-radius:10px;
-    }
-
-    .login-button{
-        width:100%;
-        margin-top:30px;
-        font-size:24px;
-        padding:16px;
-    }
-
-    .login-container a,
-    .signup-container a{
-        display:block;
-        margin-top:20px;
-        font-size:20px;
-    }
-
-
-    /* ---------- Header ---------- */
-
-    .header{
-        width:96vw;
-        margin:15px auto;
-    }
-
-    .logo{
-        width:60px;
-        height:60px;
-    }
-
-    .user-text{
-        font-size:26px;
-    }
-
-
-    /* ---------- Top bar ---------- */
-
-    .top-bar{
-        width:96vw;
-        padding:5px;
-    }
-
-    .top-bar h1{
-        font-size:34px;
-    }
-
-    .back-button,
-    .puzzles-button{
-        margin:0;
-        font-size:14px;
-        padding:10px 14px;
-    }
-
-
-    /* ---------- Chessboard ---------- */
-
-    .board-container{
-        width:96vw;
-        max-width:560px;
-    }
-
-    #board{
-        width:100% !important;
-    }
-
-    #message,
-    #checkmate-message{
-        font-size:30px;
-        width:90%;
-        text-align:center;
-    }
-
-
-    /* ---------- Clocks ---------- */
-
-    .bottom-bar{
-        width:96vw;
-    }
-
-    #white-clock,
-    #black-clock,
-    .elo,
-    .material{
-        font-size:28px;
-    }
-
-
-    /* ---------- Buttons ---------- */
-
-    button{
-        font-size:19px;
-        padding:14px 18px;
-    }
-
-    .difficulty-buttons,
-    .time-buttons{
-        width:96vw;
-        max-width:560px;
-    }
-
-    .difficulty-buttons{
-        gap:12px;
-    }
-
-    .time-buttons{
-        gap:10px;
-    }
-
-    .color-buttons{
-        gap:12px;
-    }
-
-
-    /* ---------- Creator ---------- */
-
-    .creator{
-        font-size:20px;
-        margin-top:35px;
-    }
-
-}
-
-/* MOBILE FINAL FIX */
-
-@media (max-width: 768px) {
+@media (max-width: 600px) {
 
     body {
-        width: 100%;
+        padding: 0;
         overflow-x: hidden;
     }
 
+    /* Chess board */
+    .board-container {
+        width: 94vw;
+        max-width: 500px;
+    }
 
+    #board {
+        width: 100% !important;
+    }
+
+
+    /* Keep bars the same style but shrink */
+    .header {
+        width: 94vw;
+        margin: 20px auto 20px auto;
+    }
+
+
+    .logo {
+        width: 45px;
+        height: 45px;
+    }
+
+    .user-text {
+        font-size: 18px;
+        left: 0;
+    }
+
+
+    .top-bar {
+        width: 94vw;
+        padding: 5px;
+    }
+
+
+    .top-bar h1 {
+        font-size: 24px;
+    }
+
+
+    .back-button,
+    .puzzles-button {
+        font-size: 11px;
+        margin: 0;
+        padding: 10px;
+    }
+
+
+    .bottom-bar {
+        width: 94vw;
+        margin-top: 30px;
+    }
+
+
+    .elo {
+        font-size: 22px;
+    }
+
+
+    .material {
+        font-size: 22px;
+    }
+
+
+    #white-clock,
+    #black-clock {
+        font-size: 22px;
+    }
+
+
+    /* Difficulty stays 3 columns */
+    .difficulty-buttons {
+        width: 94vw;
+        grid-template-columns: repeat(3,1fr);
+        gap: 8px;
+    }
+
+
+    .difficulty-buttons button {
+        font-size: 13px;
+        padding: 10px 5px;
+    }
+
+
+    .color-buttons {
+        flex-direction: row;
+        gap: 10px;
+    }
+
+
+    .color-buttons button {
+        width: auto;
+        padding: 10px 20px;
+    }
+
+
+    .time-buttons {
+        width: 90vw;
+        grid-template-columns: repeat(3,1fr);
+        gap: 8px;
+    }
+
+
+    .time-buttons button {
+        font-size: 14px;
+        padding: 10px 5px;
+    }
+
+
+    /* Login/signup */
     .login-container,
     .signup-container {
-        width: 85vw;
-        max-width: 380px;
+        width: 90vw;
         margin-top: 80px;
         text-align: center;
     }
@@ -739,43 +688,23 @@ html {
 
     .login-container h1,
     .signup-container h1 {
-        font-size: 38px;
+        font-size: 32px;
     }
 
 
     .login-container input,
     .signup-container input {
         width: 80%;
-        height: 45px;
-        font-size: 20px;
+        font-size: 18px;
+        padding: 8px;
     }
 
 
     .login-container button,
     .signup-container button {
-        width: 80%;
-        font-size: 20px;
-        padding: 12px;
-    }
-
-
-    .board-container {
-        width: 96vw;
-    }
-
-
-    #board {
-        width: 96vw !important;
-    }
-
-
-    .header {
-        width: 95vw;
-    }
-
-
-    .difficulty-buttons {
-        width: 95vw;
+        width: auto;
+        font-size: 18px;
+        padding: 12px 30px;
     }
 
 }
