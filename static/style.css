@@ -85,7 +85,7 @@ button:active {
 }
 
 #board {
-    width: min(92vw, 500px);
+    width: 100%;
     border: 4px solid #d4af0a;
     border-radius: 8px;
     box-shadow: 0 0 35px rgba(240, 177, 5, 0.6);
@@ -561,161 +561,159 @@ html {
 
 /* ================= MOBILE ================= */
 
-@media (max-width: 768px) {
+@media (max-width:768px){
 
-    body {
-        padding: 10px;
+    body{
+        padding:12px;
     }
 
-    .board-container,
-    .bottom-bar,
-    .header,
-    .top-bar,
-    .analysis-info,
-    .customization,
-    .games-container,
-    .difficulty-buttons {
-        width: 100vw;
-        max-width: 550px;
-    }
+    /* ---------- Login / Signup ---------- */
 
-    #board {
-        width: 100% !important;
-    }
-
-    .top-bar {
-        flex-direction: column;
-        gap: 10px;
-        text-align: center;
-    }
-
-    .top-bar h1 {
-        position: static;
-        transform: none;
-        margin: 10px 0;
-    }
-
-    .back-button,
-    .puzzles-button {
-        margin: 0;
-    }
-
-    .header {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .user-text,
-    .logout-button {
-        position: static;
-        margin: 0;
-    }
-
-    .difficulty-buttons,
-    .games-container,
-    .time-buttons {
-        grid-template-columns: 1fr;
-        width: 95vw;
-    }
-
-    .color-buttons {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .bottom-bar {
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .material,
-    #white-clock,
-    #black-clock,
-    .resign-button {
-        position: static;
-        margin: 0;
-    }
-
-    button {
-        width: 100%;
-        max-width: 400px;
-        margin-top: 12px;
-    }
-
-    #message,
-    #checkmate-message {
-        font-size: 28px;
-        width: 90%;
-        text-align: center;
-    }
-
-    .elo {
-        text-align: center;
-    }
-
-    .logo {
-        width: 55px;
-        height: 55px;
-    }
     .login-container,
-    .signup-container {
-        width: 90%;
-        max-width: 420px;
-        margin: 80px auto;
+    .signup-container{
+        width:95%;
+        max-width:500px;
+        margin:40px auto;
+        text-align:center;
     }
 
     .login-container h1,
-    .signup-container h1 {
-        font-size: 42px;
+    .signup-container h1{
+        font-size:48px;
+        margin-bottom:30px;
     }
 
-    .login-container label,
-    .signup-container label {
-        font-size: 24px;
+    .login-container p,
+    .signup-container p{
+        font-size:22px;
+        margin:18px 0 8px;
+        text-align:left;
     }
 
     .login-container input,
-    .signup-container input {
-        width: 100%;
-        font-size: 22px;
-        padding: 14px;
+    .signup-container input{
+        width:100%;
+        box-sizing:border-box;
+        padding:16px;
+        font-size:22px;
+        border-radius:10px;
     }
 
-    .login-container button,
-    .signup-container button {
-        width: 100%;
-        font-size: 24px;
-        padding: 16px;
+    .login-button{
+        width:100%;
+        margin-top:30px;
+        font-size:24px;
+        padding:16px;
     }
 
-}
-
-
-
-
-
-@media (max-width: 600px) {
-
-    body {
-        font-size: 18px;
+    .login-container a,
+    .signup-container a{
+        display:block;
+        margin-top:20px;
+        font-size:20px;
     }
 
-    h1 {
-        font-size: 36px;
+
+    /* ---------- Header ---------- */
+
+    .header{
+        width:96vw;
+        margin:15px auto;
     }
 
-    h2 {
-        font-size: 34px;
+    .logo{
+        width:60px;
+        height:60px;
     }
 
-    button {
-        font-size: 20px;
+    .user-text{
+        font-size:26px;
     }
 
-    .elo,
-    .material,
+
+    /* ---------- Top bar ---------- */
+
+    .top-bar{
+        width:96vw;
+        padding:5px;
+    }
+
+    .top-bar h1{
+        font-size:34px;
+    }
+
+    .back-button,
+    .puzzles-button{
+        margin:0;
+        font-size:14px;
+        padding:10px 14px;
+    }
+
+
+    /* ---------- Chessboard ---------- */
+
+    .board-container{
+        width:96vw;
+        max-width:560px;
+    }
+
+    #board{
+        width:100% !important;
+    }
+
+    #message,
+    #checkmate-message{
+        font-size:30px;
+        width:90%;
+        text-align:center;
+    }
+
+
+    /* ---------- Clocks ---------- */
+
+    .bottom-bar{
+        width:96vw;
+    }
+
     #white-clock,
-    #black-clock {
-        font-size: 30px;
+    #black-clock,
+    .elo,
+    .material{
+        font-size:28px;
     }
+
+
+    /* ---------- Buttons ---------- */
+
+    button{
+        font-size:19px;
+        padding:14px 18px;
+    }
+
+    .difficulty-buttons,
+    .time-buttons{
+        width:96vw;
+        max-width:560px;
+    }
+
+    .difficulty-buttons{
+        gap:12px;
+    }
+
+    .time-buttons{
+        gap:10px;
+    }
+
+    .color-buttons{
+        gap:12px;
+    }
+
+
+    /* ---------- Creator ---------- */
+
+    .creator{
+        font-size:20px;
+        margin-top:35px;
+    }
+
 }
