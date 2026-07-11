@@ -1,6 +1,6 @@
 body {
     animation:fadeIn .5s;
-    background-color: black;
+    background-color: red !important;
     color: white;
     display: flex;
     flex-direction: column;
