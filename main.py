@@ -1316,7 +1316,7 @@ def puzzles():
                 "puzzles.html",
                 fen=puzzle_board.fen(),
                 white_turn=puzzle_board.turn,
-                turn_message='',
+                turn_message=turn_message,
                 streak=streak,
                 correct_move=correct_move,
                 auto_skip=auto_skip
