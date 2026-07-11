@@ -401,7 +401,7 @@ def home():
     saved_data["new_game"] = new_game
     saved_data["current_game"] = current_game.fen() if current_game else None
 
-    test_engine.quit()
+    
     with file_lock:
         with open(FILE_PATH, 'w') as f:
             json.dump(data, f, indent=4)
@@ -467,7 +467,7 @@ def set_difficulty():
 
 @app.route("/set_color", methods=["POST"])
 def set_color():
-    test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+    
     
     with open(FILE_PATH, "r") as f:
             data = json.load(f)
@@ -549,7 +549,7 @@ def set_color():
         with open(FILE_PATH, 'w') as f:
             json.dump(data, f, indent=4)
 
-    test_engine.quit()
+    
     return redirect("/")
 
 
@@ -742,7 +742,7 @@ def legal_moves():
 
 @app.route("/move", methods=["POST"])
 def move():
-    test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
+    
     
     print("MOVE ROUTE STARTED")
     with open(FILE_PATH, "r") as f:
