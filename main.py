@@ -102,7 +102,7 @@ def get_bot_move(board):
             bot_time = saved_data["bot_time"]
             print("Bot time:", bot_time)
     print("starting analysis")
-    info = test_engine.analyse(board, chess.engine.Limit(time=bot_time), multipv=1)
+    info = test_engine.analyse(board, chess.engine.Limit(time=bot_time), multipv=5)
     print("Finished analysis")
 
     candidates = []
