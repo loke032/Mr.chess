@@ -547,3 +547,114 @@ html {
     scroll-behavior: smooth;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+
+    body {
+        padding: 10px;
+    }
+
+    .board-container,
+    .bottom-bar,
+    .header,
+    .top-bar,
+    .analysis-info,
+    .customization,
+    .games-container,
+    .difficulty-buttons {
+        width: 95vw;
+        max-width: 500px;
+    }
+
+    #board {
+        width: 100% !important;
+    }
+
+    .top-bar {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .top-bar h1 {
+        position: static;
+        transform: none;
+        margin: 10px 0;
+    }
+
+    .back-button,
+    .puzzles-button {
+        margin: 0;
+    }
+
+    .header {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .user-text,
+    .logout-button {
+        position: static;
+        margin: 0;
+    }
+
+    .difficulty-buttons,
+    .games-container,
+    .time-buttons {
+        grid-template-columns: 1fr;
+        width: 95vw;
+    }
+
+    .color-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .bottom-bar {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .material,
+    #white-clock,
+    #black-clock,
+    .resign-button {
+        position: static;
+        margin: 0;
+    }
+
+    button {
+        width: 100%;
+        max-width: 400px;
+        margin-top: 12px;
+    }
+
+    #message,
+    #checkmate-message {
+        font-size: 28px;
+        width: 90%;
+        text-align: center;
+    }
+
+    .elo {
+        text-align: center;
+    }
+
+    .logo {
+        width: 55px;
+        height: 55px;
+    }
+}

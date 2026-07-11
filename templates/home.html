@@ -1,5 +1,4 @@
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ url_for('static', filename='images/icons8-chess-16.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
@@ -38,7 +37,7 @@
 
     
     <div class="board-container">
-    <div id="board" style="width: 500px"></div>
+    <div id="board"></div>
     <div class="message" id="message" >{{ message }}</div>
     <div class = 'checkmate-message' id="checkmate-message">{{ message }}</div>
     </div>
