@@ -598,7 +598,7 @@ html {
 
 
     .top-bar {
-        width: 70vw;
+        width: 90vw;
         padding: 5px;
     }
 
@@ -705,6 +705,10 @@ html {
         width: auto;
         font-size: 18px;
         padding: 12px 30px;
+    }
+
+    .logout-button {
+        margin-bottom: 30px;
     }
 
 }
