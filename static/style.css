@@ -708,7 +708,7 @@ html {
     }
 
     .logout-button {
-    font-size: 16px;
+    font-size: 10px;
     padding: 10px 18px;
     }
 
@@ -717,14 +717,14 @@ html {
     }
 
     .user-text {
-    font-size: 16px;
+    font-size: 10px;
     }
 
     .new-game-button {
-    font-size: 16px;
+    font-size: 10px;
     }
 
     .resign-button {
-    font-size: 16px;
+    font-size: 10px;
     }
 }
