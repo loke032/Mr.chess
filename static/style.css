@@ -716,15 +716,17 @@ html {
     font-size: 18px;
     }
 
-    .user-text {
-    font-size: 10px;
-    }
+    
 
     .new-game-button {
-    font-size: 10px;
+    font-size: 13px;
     }
 
     .resign-button {
-    font-size: 10px;
+    font-size: 13px;
+    }
+
+    .top-bar h1 {
+        font-size: 20px;
     }
 }
