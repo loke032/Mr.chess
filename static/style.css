@@ -619,7 +619,7 @@ html {
     .puzzles-button {
         font-size: 11px;
         padding: 10px 16px;
-        margin-left: 100px;
+        margin-left: 110px;
         white-space: nowrap;
     }
 
@@ -733,6 +733,7 @@ html {
 
     .material {
     font-size: 18px;
+    top: 3px;
     }
 
     
