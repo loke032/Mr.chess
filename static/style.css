@@ -654,14 +654,14 @@ html {
         padding: 10px 16px;
         margin-left: 122px;
         white-space: nowrap;
-        border-radius: 8px;
+        border-radius: 12px;
     }
     .back-button.history {
         font-size: 9px;
         padding: 10px 16px;
         margin-right: 42px;
         white-space: nowrap;
-        border-radius: 8px;
+        border-radius: 12px;
     }
 
 
@@ -841,6 +841,7 @@ html {
     #delete-button {
         margin-top: 0px;
         margin-bottom: 30px;
+        font-size: 18px;
     }
 
     #rename-button {
@@ -848,6 +849,7 @@ html {
         left: 0;
         margin-top: 0px;
         margin-bottom: 30px;
+        font-size: 18px;
     }
 
     #favorit-button {
@@ -855,12 +857,13 @@ html {
         right: 0;
         margin-top: 0px;
         margin-bottom: 30px;
+        font-size: 18px;
     }
 
     .customization {
         width: 90vw;
 
-        margin: 40px auto 30px auto;
+        margin: 30px auto 20px auto;
 
         display: flex;
 
