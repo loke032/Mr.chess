@@ -1,3 +1,8 @@
+html,
+body {
+    overflow-x: hidden;
+}
+
 body {
     animation:fadeIn .5s;
     background-color: black;
@@ -575,7 +580,9 @@ html {
     }
 
     #board {
-        width: 100% !important;
+        width: 90vw !important;
+        max-width: 470px;
+        margin: 0 auto;
     }
 
 
@@ -598,7 +605,7 @@ html {
 
 
     .top-bar {
-        width: 90vw;
+        width: 96vw;
         padding: 5px;
         position: relative;
         display: flex;
@@ -768,6 +775,20 @@ html {
             0 0 8px rgba(255, 215, 0, 0.5),
             0 2px 5px rgba(0, 0, 0, 0.8);
     }
+
+    .games-container {
+        width: 90vw;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+    .game-btn {
+        font-size: 13px;
+        padding: 10px 4px;
+    }
     
+    .analysis-info {
+        width: 90vw;
+        
+    }
 }
 
