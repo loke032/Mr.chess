@@ -820,8 +820,8 @@ html {
         gap: 50px;
     }
     .move-buttons button {
-    padding-right: 60px;
-    padding-left: 60px;
+    padding-right: 65px;
+    padding-left: 65px;
     font-size: 17px;
 }
 }
