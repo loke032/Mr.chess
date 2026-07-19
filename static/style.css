@@ -220,6 +220,12 @@ button:active {
     align-items: center;
     padding: 20px;
 }
+.top-bar.history {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+}
 .top-bar h1 {
     font-size: 28px;
     position: absolute;
@@ -888,6 +894,14 @@ html {
         padding-right: 67px;
         padding-left: 67px;
         font-size: 17px;
+    }
+    .top-bar.history {
+        width: 90vw;
+        padding: 5px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
     }
 }
 
