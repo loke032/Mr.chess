@@ -605,7 +605,7 @@ html {
 
 
     .top-bar {
-        width: 96vw;
+        width: 90vw;
         padding: 5px;
         position: relative;
         display: flex;
@@ -626,14 +626,14 @@ html {
     .puzzles-button {
         font-size: 11px;
         padding: 10px 16px;
-        margin-left: auto;
+        margin-left: 110px;
         white-space: nowrap;
     }
 
     .back-button {
         font-size: 11px;
         padding: 10px 16px;
-        margin-right: auto;
+        margin-right: 40px;
         white-space: nowrap;
     }
 
