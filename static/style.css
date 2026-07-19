@@ -177,7 +177,7 @@ button:active {
 .move-buttons {
     display: flex;
     gap: 150px;
-    margin-top: -30px;
+    margin-top: 0px;
 }
 .move-buttons button {
     padding-right: 80px;
