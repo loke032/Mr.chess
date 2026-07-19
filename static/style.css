@@ -626,14 +626,14 @@ html {
     .puzzles-button {
         font-size: 11px;
         padding: 10px 16px;
-        margin-left: 110px;
+        margin-left: auto;
         white-space: nowrap;
     }
 
     .back-button {
         font-size: 11px;
         padding: 10px 16px;
-        margin-right: 40px;
+        margin-right: auto;
         white-space: nowrap;
     }
 
