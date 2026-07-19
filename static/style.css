@@ -652,7 +652,7 @@ html {
     .puzzles-button.history {
         font-size: 9px;
         padding: 10px 16px;
-        margin-left: 105px;
+        margin-left: 109px;
         white-space: nowrap;
     }
     .back-button.history {
@@ -819,6 +819,10 @@ html {
         display: flex;
         gap: 50px;
     }
-    
+    .move-buttons button {
+    padding-right: 80px;
+    padding-left: 80px;
+    font-size: 17px;
+}
 }
 
