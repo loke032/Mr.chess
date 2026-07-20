@@ -47,6 +47,8 @@ var config = {
                 
                 board.position(data.fen);
 
+                document.querySelectorAll(".move-dot").forEach(dot => dot.remove());
+
                 const material = document.getElementById('material');
                 material.innerText = `Material: ${data.material}`;
 
