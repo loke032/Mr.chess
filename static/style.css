@@ -892,18 +892,9 @@ html {
         font-size: 17px;
     }
 
-    .move-dot {
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background: rgba(0,0,0,0.3);
-
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-
-        pointer-events: none;
+    .move-dot{
+        width:12px !important;
+        height:12px !important;
     }
 
     #message {
