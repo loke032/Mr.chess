@@ -1,5 +1,5 @@
 let gameOver = false;
-let game_ended = false;
+
 
 var config = {
         draggable: true,
