@@ -1,5 +1,5 @@
 let gameOver = false;
-
+let game_ended = false;
 
 var config = {
         draggable: true,
@@ -35,6 +35,7 @@ var config = {
             })
             .then(response => response.json())
             .then(data => {
+                game_ended = data.game_ended;
 
                 board.position(data.fen);
                 currentFen = data.fen
