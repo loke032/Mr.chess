@@ -97,7 +97,9 @@ button:active {
     border-radius: 8px;
     box-shadow: 0 0 35px rgba(240, 177, 5, 0.6);
 
-    
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 
@@ -569,7 +571,12 @@ html {
     scroll-behavior: smooth;
 }
 
-
+#board img {
+    -webkit-user-drag: none;
+    -webkit-touch-callout: none; /* Safari/Chrome on iPhone */
+    user-select: none;
+    -webkit-user-select: none;
+}
 
 
 
