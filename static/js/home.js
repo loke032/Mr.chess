@@ -79,7 +79,11 @@ var config = {
     };
     
     board = Chessboard("board", config);
-    
+    document.addEventListener("contextmenu", function (e) {
+        if (e.target.closest("#board")) {
+            e.preventDefault();
+        }
+    });
 
 
 console.log(whiteTime)
