@@ -160,13 +160,15 @@ let enabled = false;
 
 
 function ondragStart(source, piece) {
+    document.querySelectorAll(".move-dot").forEach(dot => dot.remove());
     showLegalMoves(source);
 }
 
 
 
 function showLegalMoves(square) {
-    console.log('Fen sending to legal_moves', currentFen)
+    const requestFen = currentFen;
+
     fetch('/legal_moves', {
         method: 'POST',
         headers: {
@@ -174,18 +176,23 @@ function showLegalMoves(square) {
         },
         body: JSON.stringify({
             square: square,
-            fen: currentFen
+            fen: requestFen
         })
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data.moves)
+
+        // Board changed while waiting -> ignore this response
+        if (requestFen !== currentFen) return;
+
         document.querySelectorAll(".move-dot").forEach(dot => dot.remove());
+
         data.moves.forEach(target => {
             const squareEl = document.querySelector(`.square-${target}`);
             if (!squareEl) return;
-            const dot = document.createElement('div');
-            dot.classList.add('move-dot');
+
+            const dot = document.createElement("div");
+            dot.classList.add("move-dot");
             squareEl.appendChild(dot);
         });
     });
