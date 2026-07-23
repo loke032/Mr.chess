@@ -154,12 +154,6 @@ def format_time(time_seconds):
     return f"{minutes:02}:{seconds:02}"
 
 
-@app.route("/ping")
-def ping():
-    print("PING")
-    return {"ok": True}
-
-
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
@@ -200,8 +194,9 @@ def signup():
         with file_lock:
             with open(FILE_PATH, "w") as f:
                 json.dump(saved_data, f, indent=4)
+        session["username"] = username
 
-        return redirect("/login")
+        return redirect("/")
 
     return render_template("signup.html")
 
@@ -234,7 +229,7 @@ def logout():
 @app.route("/", methods=["GET", "POST"])
 def home():
     if "username" not in session:
-        return redirect("/login")
+        return redirect("/signup")
     
 
     try:
