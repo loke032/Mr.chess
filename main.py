@@ -275,7 +275,14 @@ def home():
         return redirect("/login")
     if not games:
         board = chess.Board()
-        print("white time =", white_time)
+
+        saved_data["current_game"] = board.fen()
+        saved_data["new_game"] = True
+
+        with file_lock:
+            with open(FILE_PATH, "w") as f:
+                json.dump(data, f, indent=4)
+        
         return render_template(
             "home.html",
             fen=board.fen(),
