@@ -165,7 +165,7 @@ def signup():
             saved_data = json.load(f)
 
         if username in saved_data["users"]:
-            return "Username already exists. Try again."
+            return render_template("signup.html", error="Username already exists. Try again.")
 
         saved_data["users"][username] = {
             "password": password,
@@ -210,11 +210,11 @@ def login():
         with open(FILE_PATH, "r") as f:
             saved_data = json.load(f)
         if not username in saved_data["users"]:
-            return "Username does not exist. Please try again."
+            return render_template("login.html", error="Username does not exist. Please try again.")
         if saved_data["users"][username]["password"] == password:
             session["username"] = username
         else:
-            return "Password does not match. Please try again."
+            return render_template("login.html", error="Password does not match. Please try again.")
         return redirect("/")
 
     return render_template("login.html")

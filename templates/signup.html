@@ -5,6 +5,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css', v='2') }}">
 </head>
 <body>
+
+{% if error %}
+<div class="error-message">
+    {{ error }}
+</div>
+{% endif %}
+
 <div class="signup-container">
 <h1>Create Account</h1>
 

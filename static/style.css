@@ -558,7 +558,25 @@ h2 {
     transform: scale(1.03);
 }
 
+.error-message {
+    background: #111;
+    color: white;
 
+    border: 2px solid #c33;
+
+    padding: 14px 20px;
+    margin: 20px auto;
+
+    border-radius: 12px;
+
+    font-size: 22px;
+    font-weight: bold;
+
+    text-align: center;
+
+    width: fit-content;
+    max-width: 90%;
+}
 
 
 
@@ -587,6 +605,11 @@ html {
 /* ================= MOBILE FIX ================= */
 
 @media (max-width: 600px) {
+
+    .error-message {
+        font-size: 28px;
+        padding: 18px 24px;
+    }
 
     body {
         padding: 0;
