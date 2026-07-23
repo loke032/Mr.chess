@@ -571,16 +571,7 @@ html {
     scroll-behavior: smooth;
 }
 
-#board,
-#board * {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    user-select: none;
-}
 
-#board img {
-    pointer-events: none;
-}
 
 
 
@@ -917,6 +908,17 @@ html {
     #checkmate-message {
         font-size: 24px;
         padding: 10px 18px;
+    }
+
+    #board,
+    #board * {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+    }
+
+    #board img {
+        pointer-events: none;
     }
 
     
