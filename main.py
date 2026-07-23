@@ -274,7 +274,7 @@ def home():
     except Exception:
         return redirect("/login")
     if not games:
-        board = chess.Board()
+        board = current_game if current_game else chess.Board()
 
         saved_data["current_game"] = board.fen()
         saved_data["new_game"] = True
