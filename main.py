@@ -483,7 +483,7 @@ def set_color():
 
     selected_color = request.form["color"]
 
-    if new_game:
+    if new_game or saved_data["games"] == {}:
         player_color = selected_color
         color_setting = selected_color
         if player_color == "random":
