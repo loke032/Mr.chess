@@ -571,15 +571,15 @@ html {
     scroll-behavior: smooth;
 }
 
-#board img {
-    -webkit-user-drag: none;
-    
-
+#board,
+#board * {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     user-select: none;
+}
 
-    pointer-events: auto;
+#board img {
+    pointer-events: none;
 }
 
 

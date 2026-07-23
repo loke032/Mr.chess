@@ -79,11 +79,14 @@ var config = {
     };
     
     board = Chessboard("board", config);
-    document.addEventListener("contextmenu", function (e) {
-        if (e.target.closest("#board")) {
-            e.preventDefault();
-        }
-    });
+
+    const boardEl = document.getElementById("board");
+
+    boardEl.addEventListener("contextmenu", e => e.preventDefault());
+
+    boardEl.addEventListener("touchstart", e => {
+        e.preventDefault();
+    }, { passive: false });
 
 
 console.log(whiteTime)
