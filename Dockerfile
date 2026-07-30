@@ -12,4 +12,4 @@ RUN git clone https://github.com/official-stockfish/Stockfish.git \
 
 COPY . .
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "main:app"]
