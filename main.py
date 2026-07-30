@@ -40,7 +40,7 @@ test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
 
 test_engine.configure({
     "Threads": 1,
-    "Hash": 64
+    "Hash": 16
 })
 
 
