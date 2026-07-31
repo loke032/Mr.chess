@@ -38,10 +38,7 @@ stockfish_path = os.path.join(
 
 test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
 
-test_engine.configure({
-    "Threads": 1,
-    "Hash": 4
-})
+
 
 
 def get_board():
