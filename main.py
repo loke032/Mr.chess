@@ -1063,11 +1063,9 @@ def puzzle_move():
 
             streak = saved_data["puzzle_streak"]
 
-    except Exception:
-        with file_lock:
-            with open(FILE_PATH, "w") as f:
-                json.dump({"puzzle_streak": 0, "games": {}}, f, indent=4)
-                streak = 0
+    except Exception as e:
+        print("Puzzle error:", e)
+        raise
 
 
     data_move = request.json
