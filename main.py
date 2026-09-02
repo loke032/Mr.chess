@@ -10,6 +10,8 @@ import shutil
 import requests
 import tarfile
 import resource
+import tempfile
+import os
 
 
 
@@ -39,7 +41,37 @@ stockfish_path = os.path.join(
 test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
 
 
+def save_json(data):
+    directory = os.path.dirname(FILE_PATH)
 
+    if os.path.exists(FILE_PATH):
+        backup_path = FILE_PATH + ".backup"
+
+        with open(FILE_PATH, "r") as old:
+            old_data = old.read()
+
+        with open(backup_path, "w") as backup:
+            backup.write(old_data)
+
+
+    fd, temp_path = tempfile.mkstemp(
+        dir=directory,
+        prefix="games_",
+        suffix=".tmp"
+    )
+
+    try:
+        with os.fdopen(fd, "w") as f:
+            json.dump(data, f, indent=4)
+            f.flush()
+            os.fsync(f.fileno())
+
+        os.replace(temp_path, FILE_PATH)
+
+    except Exception:
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
+        raise
 
 def get_board():
     with open(FILE_PATH, "r") as f:
@@ -192,8 +224,7 @@ def signup():
         }
 
         with file_lock:
-            with open(FILE_PATH, "w") as f:
-                json.dump(saved_data, f, indent=4)
+            save_json(saved_data)
         session["username"] = username
 
         return redirect("/")
@@ -259,8 +290,7 @@ def home():
         print("could not open the games.json file!(start og home)")
         data = {"users": {}}
         with file_lock:
-            with open(FILE_PATH, "w") as f:
-                json.dump(data, f, indent=4)
+            save_json(data)
 
     username = session["username"]
     try:
@@ -280,8 +310,7 @@ def home():
         saved_data["new_game"] = True
 
         with file_lock:
-            with open(FILE_PATH, "w") as f:
-                json.dump(data, f, indent=4)
+            save_json(data)
         
         return render_template(
             "home.html",
@@ -405,8 +434,7 @@ def home():
 
     
     with file_lock:
-        with open(FILE_PATH, 'w') as f:
-            json.dump(data, f, indent=4)
+        save_json(data)
 
     return render_template(
         "home.html",
@@ -461,8 +489,7 @@ def set_difficulty():
     saved_data["bot_time"] = bot_time
     
     with file_lock:
-        with open(FILE_PATH, 'w') as f:
-            json.dump(data, f, indent=4)
+        save_json(data)
 
     return redirect("/")
 
@@ -548,8 +575,7 @@ def set_color():
     saved_data["current_game"] = current_game.fen() if current_game else None
 
     with file_lock:
-        with open(FILE_PATH, 'w') as f:
-            json.dump(data, f, indent=4)
+        save_json(data)
 
     
     return redirect("/")
@@ -575,8 +601,7 @@ def toggle_local_play():
     saved_data["local_play_button_pressed"] = local_play_button_pressed
     
     with file_lock:
-        with open(FILE_PATH, 'w') as f:
-            json.dump(data, f, indent=4)
+        save_json(data)
 
     return redirect("/")
 
@@ -633,8 +658,7 @@ def resign():
     saved_data["resigned"] = resigned
 
     with file_lock:
-        with open(FILE_PATH, "w") as f:
-            json.dump(data, f, indent=4)
+        save_json(data)
 
     
     return redirect("/")
@@ -687,8 +711,7 @@ def save_clock():
                 games[latest_game]["result"] = f"Win vs {difficulty.capitalize()}"
 
     with file_lock:
-        with open(FILE_PATH, "w") as f:
-            json.dump(data1, f, indent=4)
+        save_json(data)
 
     return {"success": True}
 
@@ -720,8 +743,7 @@ def toggle_time():
     saved_data["time"] = time
     
     with file_lock:
-        with open(FILE_PATH, "w") as f:
-            json.dump(data1, f, indent=4)
+        save_json(data1)
     return redirect("/")
 
 
@@ -1016,8 +1038,7 @@ def move():
     saved_data["new_game"] = new_game
 
     with file_lock:
-        with open(FILE_PATH, "w") as f:
-            json.dump(data, f, indent=4)
+        save_json(data)
 
     material = get_material(board)
 
@@ -1144,8 +1165,7 @@ def puzzle_move():
     saved_data["puzzle_completed"] = puzzle_completed 
     saved_data["puzzle_board"] = puzzle_board.fen() if puzzle_board else None
     with file_lock:
-        with open(FILE_PATH, "w") as f:
-            json.dump(data, f, indent=4)
+        save_json(data)
     return {
         "legal": legal,
         "fen": puzzle_board.fen(),
@@ -1178,8 +1198,7 @@ def history():
                 del games[game_name]
 
     with file_lock:
-        with open(FILE_PATH, "w") as f:
-            json.dump(data, f, indent=4)
+        save_json(data)
 
     games = dict(
         sorted(
@@ -1205,8 +1224,7 @@ def delete_game(game_name):
             del saved_data["games"][game_name]
 
     with file_lock:
-        with open(FILE_PATH, "w") as f:
-            json.dump(data, f, indent=4)
+        save_json(data)
     return "", 204
 
 
@@ -1224,8 +1242,7 @@ def rename_game():
     saved_data["games"][game_name]["custom_name"] = new_name
 
     with file_lock:
-        with open(FILE_PATH, "w") as f:
-            json.dump(data, f, indent=4)
+        save_json(data)
 
     return "", 204
 
@@ -1241,8 +1258,7 @@ def favorit_game(game_name):
     )
 
     with file_lock:
-        with open(FILE_PATH, "w") as f:
-            json.dump(data, f, indent=4)
+        save_json(data)
 
     return "", 204
 
@@ -1308,8 +1324,7 @@ def puzzles():
         saved_data["puzzle_completed"] = puzzle_completed 
         saved_data["puzzle_board"] = puzzle_board.fen() if puzzle_board else None
         with file_lock:
-            with open(FILE_PATH, "w") as f:
-                json.dump(data, f, indent=4)
+            save_json(data)
 
         if auto_skip_pressed:
             return render_template(
@@ -1344,8 +1359,7 @@ def end_streak():
     saved_data["puzzle_streak"] = 0
 
     with file_lock:
-        with open(FILE_PATH, 'w') as f:
-            json.dump(data, f, indent=4)
+        save_json(data)
     return {"streak": 0}
 
 @app.route('/toggle_auto_skip', methods=["POST"])
@@ -1366,8 +1380,7 @@ def toggle_auto_skip():
     saved_data["auto_skip"] = auto_skip
     saved_data["auto_skip_pressed"] = auto_skip_pressed
     with file_lock:
-            with open(FILE_PATH, "w") as f:
-                json.dump(data, f, indent=4)
+            save_json(data)
     return redirect('/puzzles')
 
 @app.errorhandler(Exception)
