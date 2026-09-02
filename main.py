@@ -12,6 +12,7 @@ import tarfile
 import resource
 import tempfile
 import os
+from datetime import datetime
 
 
 
@@ -42,6 +43,9 @@ test_engine = chess.engine.SimpleEngine.popen_uci(stockfish_path)
 
 
 def save_json(data):
+    if "users" not in data:
+        print("BLOCKED BAD SAVE:", data)
+        raise ValueError("Invalid save prevented")
     directory = os.path.dirname(FILE_PATH)
 
     if os.path.exists(FILE_PATH):
@@ -711,7 +715,7 @@ def save_clock():
                 games[latest_game]["result"] = f"Win vs {difficulty.capitalize()}"
 
     with file_lock:
-        save_json(data)
+        save_json(data1)
 
     return {"success": True}
 
